@@ -1,47 +1,113 @@
 import streamlit as st
-
 from islamic_contracts import Murabaha, Ijara, Mudarabah
 
-# Page Config
+# ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Shariah Financing Recommendation System",
+    page_title="Shariah Financing Recommender",
     page_icon="💰",
-    layout="centered"
+    layout="wide"
 )
 
-# Title
+# ---------------- CUSTOM CSS ----------------
+st.markdown("""
+<style>
+
+.main {
+    background-color: #f5f7fa;
+}
+
+.stApp {
+    background: linear-gradient(to right, #f8fbff, #eef2f7);
+}
+
+h1 {
+    color: #0E5A8A;
+    text-align: center;
+}
+
+h2, h3 {
+    color: #1F3B4D;
+}
+
+div.stButton > button {
+    background-color: #0E5A8A;
+    color: white;
+    border-radius: 10px;
+    height: 3em;
+    width: 100%;
+    font-size: 18px;
+    border: none;
+}
+
+div.stButton > button:hover {
+    background-color: #1177bb;
+    color: white;
+}
+
+[data-testid="stMetricValue"] {
+    color: green;
+    font-size: 28px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------- HEADER ----------------
 st.title("💰 AI-Assisted Shariah Financing Recommendation System")
 
-st.write("""
-This application recommends and demonstrates
-Shariah-compliant financing contracts using
-rule-based decision support.
-""")
+st.markdown("""
+<div style='text-align: center; font-size:18px;'>
 
-# Sidebar
-st.sidebar.title("Islamic Finance Products")
+This fintech application recommends and demonstrates
+<b>Shariah-compliant financing products</b>
+using rule-based intelligent decision support.
 
-product = st.sidebar.selectbox(
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
+
+# ---------------- SIDEBAR ----------------
+st.sidebar.title("📌 Navigation")
+
+product = st.sidebar.radio(
     "Choose Financing Product",
     ["Murabaha", "Ijara", "Mudarabah"]
 )
 
-# ---------------- MURABAHA ----------------
+st.sidebar.markdown("---")
+
+st.sidebar.info("""
+### Technologies Used
+- Python
+- Streamlit
+- OOP
+- Rule-Based AI
+- Islamic Finance
+""")
+
+# ================= MURABAHA =================
 if product == "Murabaha":
 
-    st.header("Murabaha Contract")
+    st.header("📦 Murabaha Contract")
 
-    asset_name = st.text_input("Asset Name")
+    col1, col2 = st.columns(2)
 
-    cost_price = st.number_input(
-        "Cost Price",
-        min_value=0.0
-    )
+    with col1:
+        asset_name = st.text_input("Asset Name")
 
-    profit_rate = st.number_input(
-        "Profit Rate (%)",
-        min_value=0.0
-    )
+        cost_price = st.number_input(
+            "Cost Price",
+            min_value=0.0
+        )
+
+    with col2:
+        profit_rate = st.number_input(
+            "Profit Rate (%)",
+            min_value=0.0
+        )
+
+    st.markdown("")
 
     if st.button("Generate Murabaha Contract"):
 
@@ -51,33 +117,46 @@ if product == "Murabaha":
             profit_rate
         )
 
-        st.success("Contract Generated Successfully")
+        st.success("✅ Contract Generated Successfully")
 
-        st.write(contract.summary())
+        st.markdown("### 📄 Contract Summary")
 
-        st.subheader("Contract Value")
+        st.info(contract.summary())
 
-        st.metric(
-            "Selling Price",
-            contract.contract_value()
-        )
+        col1, col2 = st.columns(2)
 
-# ---------------- IJARA ----------------
+        with col1:
+            st.metric(
+                "💵 Profit Amount",
+                f"{contract.profit_amount:,.2f}"
+            )
+
+        with col2:
+            st.metric(
+                "💰 Selling Price",
+                f"{contract.contract_value():,.2f}"
+            )
+
+# ================= IJARA =================
 elif product == "Ijara":
 
-    st.header("Ijara Contract")
+    st.header("🏢 Ijara Contract")
 
-    asset_name = st.text_input("Asset Name")
+    col1, col2 = st.columns(2)
 
-    monthly_rent = st.number_input(
-        "Monthly Rent",
-        min_value=0.0
-    )
+    with col1:
+        asset_name = st.text_input("Asset Name")
 
-    months = st.number_input(
-        "Duration (Months)",
-        min_value=1
-    )
+        monthly_rent = st.number_input(
+            "Monthly Rent",
+            min_value=0.0
+        )
+
+    with col2:
+        months = st.number_input(
+            "Duration (Months)",
+            min_value=1
+        )
 
     if st.button("Generate Ijara Contract"):
 
@@ -87,38 +166,42 @@ elif product == "Ijara":
             months
         )
 
-        st.success("Contract Generated Successfully")
+        st.success("✅ Contract Generated Successfully")
 
-        st.write(contract.summary())
+        st.markdown("### 📄 Contract Summary")
 
-        st.subheader("Contract Value")
+        st.info(contract.summary())
 
         st.metric(
-            "Total Rent",
-            contract.contract_value()
+            "💰 Total Rent",
+            f"{contract.contract_value():,.2f}"
         )
 
-# ---------------- MUDARABAH ----------------
+# ================= MUDARABAH =================
 elif product == "Mudarabah":
 
-    st.header("Mudarabah Contract")
+    st.header("📈 Mudarabah Contract")
 
-    capital = st.number_input(
-        "Capital",
-        min_value=0.0
-    )
+    col1, col2 = st.columns(2)
 
-    total_profit = st.number_input(
-        "Total Profit",
-        min_value=0.0
-    )
+    with col1:
+        capital = st.number_input(
+            "Capital",
+            min_value=0.0
+        )
 
-    investor_ratio = st.slider(
-        "Investor Ratio",
-        0.0,
-        1.0,
-        0.5
-    )
+        total_profit = st.number_input(
+            "Total Profit",
+            min_value=0.0
+        )
+
+    with col2:
+        investor_ratio = st.slider(
+            "Investor Ratio",
+            0.0,
+            1.0,
+            0.5
+        )
 
     if st.button("Generate Mudarabah Contract"):
 
@@ -128,30 +211,33 @@ elif product == "Mudarabah":
             investor_ratio
         )
 
-        st.success("Contract Generated Successfully")
+        st.success("✅ Contract Generated Successfully")
 
-        st.write(contract.summary())
+        st.markdown("### 📄 Contract Summary")
 
-        st.subheader("Profit Distribution")
+        st.info(contract.summary())
 
-        st.metric(
-            "Investor Share",
-            contract.investor_share
-        )
+        col1, col2 = st.columns(2)
 
-        st.metric(
-            "Entrepreneur Share",
-            contract.entrepreneur_share
-        )
+        with col1:
+            st.metric(
+                "👤 Investor Share",
+                f"{contract.investor_share:,.2f}"
+            )
 
-# Footer
+        with col2:
+            st.metric(
+                "🏢 Entrepreneur Share",
+                f"{contract.entrepreneur_share:,.2f}"
+            )
+
+# ---------------- FOOTER ----------------
 st.markdown("---")
 
-st.write("""
-Developed using:
-- Python
-- Streamlit
-- Object-Oriented Programming
-- Rule-Based AI
-- Islamic Finance Principles
-""")
+st.markdown("""
+<div style='text-align:center'>
+
+Developed with ❤️ using Streamlit and Python
+
+</div>
+""", unsafe_allow_html=True)
