@@ -17,16 +17,11 @@ st.markdown("""
 }
 
 .stApp {
-    background: linear-gradient(to right, #f8fbff, #eef2f7);
+    background-color: #f5f7fa;
 }
 
-h1 {
-    color: #0E5A8A;
-    text-align: center;
-}
-
-h2, h3 {
-    color: #1F3B4D;
+h1, h2, h3 {
+    color: #111111;
 }
 
 div.stButton > button {
